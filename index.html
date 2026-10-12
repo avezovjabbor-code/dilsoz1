@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVTOBOZOR.UZ — Avtomobillar Olib-Sotish Platformasi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --bg-surface: #111726;
+      --bg-surface-elevated: #182033;
+      --bg-glass: rgba(17, 23, 38, 0.75);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-focus: #3b82f6;
+      
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-glow: rgba(37, 99, 235, 0.35);
+      --accent: #f59e0b;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dark: #475569;
+
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 25px rgba(37, 99, 235, 0.25);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f1f5f9;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f8fafc;
+      --bg-glass: rgba(255, 255, 255, 0.85);
+      --border-glass: rgba(0, 0, 0, 0.08);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-dark: #94a3b8;
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Top Live Bar */
+    .top-bar {
+      background: rgba(17, 23, 38, 0.6);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-glass);
+      font-size: 0.85rem;
+      padding: 8px 0;
+      color: var(--text-muted);
+    }
+    .top-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+    .currency-tag {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border-glass);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-glass);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 14px 0;
+      transition: var(--transition);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8, #0ea5e9);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: white;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    }
+    .brand-text h1 {
+      font-family: 'Cabinet Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      background: linear-gradient(to right, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="light"] .brand-text h1 {
+      background: linear-gradient(to right, #0f172a, #334155);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text span {
+      font-size: 0.72rem;
+      color: var(--primary);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-glass);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-icon {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .btn-accent {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 50px 0 35px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: #60a5fa;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      backdrop-filter: blur(5px);
+    }
+    .hero-title {
+      font-family: 'Cabinet Grotesk', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 35px;
+    }
+
+    /* Fast Stats Row */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 950px;
+      margin: 0 auto 40px;
+    }
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+      transition: var(--transition);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.4);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .stat-blue { background: rgba(37, 99, 235, 0.15); color: #3b82f6; }
+    .stat-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .stat-gold { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .stat-purple { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+    .stat-num {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Search & Filter Box */
+    .search-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .search-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+    .search-form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr auto;
+      gap: 14px;
+      align-items: flex-end;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+    .form-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-control, .select-control {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .input-control:focus, .select-control:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .select-control option {
+      background: #182033;
+      color: #f8fafc;
+    }
+
+    /* Popular Quick Categories */
+    .quick-tags {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-glass);
+      flex-wrap: wrap;
+    }
+    .tag-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .quick-chip {
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .quick-chip:hover, .quick-chip.active {
+      background: rgba(37, 99, 235, 0.2);
+      border-color: var(--primary);
+      color: #93c5fd;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .sort-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sort-select {
+      padding: 8px 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    /* Cars Grid */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    /* Car Card */
+    .car-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .car-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.45);
+      border-color: rgba(37, 99, 235, 0.4);
+    }
+    .car-img-wrapper {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #1e293b;
+    }
+    .car-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .car-card:hover .car-img {
+      transform: scale(1.06);
+    }
+    .car-badges {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 2;
+    }
+    .badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .badge-top { background: rgba(245, 158, 11, 0.9); color: #000; }
+    .badge-new { background: rgba(16, 185, 129, 0.9); color: #fff; }
+    .badge-credit { background: rgba(37, 99, 235, 0.9); color: #fff; }
+    .badge-electric { background: rgba(168, 85, 247, 0.9); color: #fff; }
+
+    .fav-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 2;
+    }
+    .fav-btn:hover, .fav-btn.active {
+      background: #ef4444;
+      color: white;
+      transform: scale(1.1);
+      border-color: #ef4444;
+    }
+
+    .car-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .car-header {
+      margin-bottom: 12px;
+    }
+    .car-title {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .car-location {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Specs Grid inside Card */
+    .car-specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+    }
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .spec-item i {
+      color: var(--primary);
+      width: 14px;
+      text-align: center;
+    }
+
+    .car-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-glass);
+    }
+    .price-box {
+      display: flex;
+      flex-direction: column;
+    }
+    .price-main {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: -0.5px;
+    }
+    .price-uzs {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-detail {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+    }
+
+    /* Tools & Calculators Section */
+    .tools-section {
+      background: linear-gradient(180deg, var(--bg-surface), var(--bg-dark));
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 35px;
+      margin-bottom: 60px;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 25px;
+    }
+    .tool-box {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+    .tool-box h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tool-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .calc-slider-group {
+      margin-bottom: 18px;
+    }
+    .calc-slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+    .calc-slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 4px;
+      background: #334155;
+      outline: none;
+      -webkit-appearance: none;
+      accent-color: var(--primary);
+    }
+    .calc-result-box {
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .monthly-payment-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+
+    /* Sell Car Banner (Call to action) */
+    .cta-banner {
+      background: linear-gradient(135deg, #1e3a8a, #1d4ed8, #0284c7);
+      border-radius: var(--radius-lg);
+      padding: 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      box-shadow: 0 25px 40px -15px rgba(37, 99, 235, 0.4);
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      right: -60px;
+      bottom: -60px;
+      width: 250px;
+      height: 250px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+    }
+    .cta-content h2 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .cta-content p {
+      color: #e0f2fe;
+      font-size: 1rem;
+      max-width: 550px;
+    }
+
+    /* Modal System */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.95);
+      transition: var(--transition);
+      position: relative;
+    }
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--bg-surface);
+      z-index: 10;
+    }
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .close-modal {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .close-modal:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+    }
+    .modal-body {
+      padding: 24px;
+    }
+
+    /* Modal Details Layout */
+    .detail-img-box {
+      width: 100%;
+      height: 320px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 20px;
+      background: #000;
+    }
+    .detail-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .detail-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .detail-spec-card {
+      background: var(--bg-surface-elevated);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-glass);
+    }
+    .detail-spec-title {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .detail-spec-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    /* Contact box */
+    .seller-contact-card {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(16, 185, 129, 0.08));
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #10b981;
+      color: white;
+      padding: 14px 22px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      background: #07090e;
+      border-top: 1px solid var(--border-glass);
+      padding: 50px 0 25px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .search-form-grid { grid-template-columns: 1fr 1fr; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero-title { font-size: 2.2rem; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .search-form-grid { grid-template-columns: 1fr; }
+      .cta-banner { flex-direction: column; text-align: center; }
+      .detail-specs-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Notification & Currency Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="live-badge">
+        <span class="pulse-dot"></span>
+        <span>Jonli Avtobozor: 2,480+ yangi e'lonlar bugun</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span class="currency-tag"><i class="fa-solid fa-dollar-sign"></i> 1 USD = <strong>12,850 UZS</strong></span>
+        <span><i class="fa-solid fa-phone"></i> Aloqa: +998 (71) 200-55-44</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-car-side"></i>
+        </div>
+        <div class="brand-text">
+          <h1>AVTOBOZOR</h1>
+          <span>O'zbekiston №1</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a class="nav-link active" href="#catalog"><i class="fa-solid fa-car"></i> Mashinalar</a></li>
+        <li><a class="nav-link" href="#calculator"><i class="fa-solid fa-calculator"></i> Kredit Kalkulyator</a></li>
+        <li><a class="nav-link" href="#valuation"><i class="fa-solid fa-chart-line"></i> Baholash</a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="filterFavorites()"><i class="fa-solid fa-heart"></i> Saqlanganlar (<span id="favCount">0</span>)</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="themeToggle" title="Mavzuni almashtirish">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="btn btn-primary" onclick="openAddCarModal()">
+          <i class="fa-solid fa-plus-circle"></i> E'lon berish
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <i class="fa-solid fa-shield-halved"></i> 100% Tekshirilgan va Ishonchli Avtomobillar
+      </div>
+      <h1 class="hero-title">
+        Orzuyingizdagi Mashinani Oling yoki<br><span>Foydali Narxda Soting!</span>
+      </h1>
+      <p class="hero-desc">
+        Chevrolet, BYD, Kia, Hyundai, BMW va boshqa yetakchi brendlarning Toshkent va butun O'zbekiston bo'ylab 15,000+ dan ziyod eng yaxshi avtomobil takliflari.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-icon stat-blue"><i class="fa-solid fa-car-rear"></i></div>
+          <div>
+            <div class="stat-num" id="totalCarsCount">1,248</div>
+            <div class="stat-label">Sotuvdagi Mashinalar</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-green"><i class="fa-solid fa-handshake"></i></div>
+          <div>
+            <div class="stat-num">8,950+</div>
+            <div class="stat-label">Muvaffaqiyatli Bitimlar</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-gold"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <div>
+            <div class="stat-num">12% dan</div>
+            <div class="stat-label">Imtiyozli Avtokredit</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-purple"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <div class="stat-num">450+</div>
+            <div class="stat-label">Elektromobillar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Search & Filter Form -->
+      <div class="search-panel">
+        <form id="searchForm" onsubmit="event.preventDefault(); applyFilters();" class="search-form-grid">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-magnifying-glass"></i> Qidiruv so'zi</label>
+            <input type="text" id="searchInput" class="input-control" placeholder="Masalan: Gentra, Malibu, Song Plus...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-tag"></i> Marka</label>
+            <select id="brandSelect" class="select-control">
+              <option value="">Barcha markalar</option>
+              <option value="Chevrolet">Chevrolet</option>
+              <option value="BYD">BYD</option>
+              <option value="Kia">Kia</option>
+              <option value="Hyundai">Hyundai</option>
+              <option value="BMW">BMW</option>
+              <option value="Mercedes-Benz">Mercedes-Benz</option>
+              <option value="Li Auto">Li Auto (Lixiang)</option>
+              <option value="Zeekr">Zeekr</option>
+              <option value="Toyota">Toyota</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-gas-pump"></i> Yoqilg'i</label>
+            <select id="fuelSelect" class="select-control">
+              <option value="">Barchasi</option>
+              <option value="Benzin">Benzin</option>
+              <option value="Gibrid">Gibrid</option>
+              <option value="Elektro">Elektro</option>
+              <option value="Gaz/Metan">Gaz / Metan</option>
+              <option value="Propan">Propan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-money-bill-wave"></i> Max Narx ($)</label>
+            <select id="maxPriceSelect" class="select-control">
+              <option value="">Cheklovsiz</option>
+              <option value="10000">$10,000 gacha</option>
+              <option value="15000">$15,000 gacha</option>
+              <option value="25000">$25,000 gacha</option>
+              <option value="40000">$40,000 gacha</option>
+              <option value="70000">$70,000 gacha</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-location-dot"></i> Hudud</label>
+            <select id="regionSelect" class="select-control">
+              <option value="">O'zbekiston bo'yicha</option>
+              <option value="Toshkent">Toshkent sh.</option>
+              <option value="Samarqand">Samarqand</option>
+              <option value="Farg'ona">Farg'ona</option>
+              <option value="Andijon">Andijon</option>
+              <option value="Namangan">Namangan</option>
+              <option value="Buxoro">Buxoro</option>
+              <option value="Xorazm">Xorazm</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">&nbsp;</label>
+            <button type="submit" class="btn btn-primary" style="height: 46px; width: 100%;">
+              <i class="fa-solid fa-sliders"></i> Qidirish
+            </button>
+          </div>
+        </form>
+
+        <!-- Quick brand filters -->
+        <div class="quick-tags">
+          <span class="tag-label">Mashhur markalar:</span>
+          <button class="quick-chip active" onclick="setQuickBrand('')">Barchasi</button>
+          <button class="quick-chip" onclick="setQuickBrand('Chevrolet')">Chevrolet</button>
+          <button class="quick-chip" onclick="setQuickBrand('BYD')">BYD Electro/Hybrid</button>
+          <button class="quick-chip" onclick="setQuickBrand('Kia')">Kia</button>
+          <button class="quick-chip" onclick="setQuickBrand('Hyundai')">Hyundai</button>
+          <button class="quick-chip" onclick="setQuickBrand('BMW')">BMW Premium</button>
+          <button class="quick-chip" onclick="setQuickBrand('Zeekr')">Zeekr</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Catalog Section -->
+  <section class="container" id="catalog">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title"><i class="fa-solid fa-fire text-amber-500"></i> Dolzarb E'lonlar</h2>
+        <p class="section-subtitle">Eng so'nggi qo'shilgan va tekshirilgan mashinalar ro'yxati</p>
+      </div>
+
+      <div class="sort-bar">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Saralash:</span>
+        <select id="sortBy" class="sort-select" onchange="renderCars()">
+          <option value="newest">Yangi qo'shilganlar</option>
+          <option value="price_asc">Narx: Arzondan qimmatga</option>
+          <option value="price_desc">Narx: Qimmatdan arzonga</option>
+          <option value="year_desc">Ishlab chiqarilgan yili</option>
+          <option value="mileage_asc">Yurgan masofasi kamroq</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Cars Cards Grid Container -->
+    <div class="cars-grid" id="carsGrid">
+      <!-- Dynamic Car Cards inserted via JavaScript -->
+    </div>
+  </section>
+
+  <!-- Car Valuation & Calculator Tools Section -->
+  <section class="container tools-section" id="calculator">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto 30px;">
+      <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">
+        <i class="fa-solid fa-calculator" style="color: var(--primary);"></i> Aqlli Avto-Moliyaviy Instrumentlar
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Mashinangiz narxini hisoblang yoki qulay avtokredit / lizing to'lovlarini 1 daqiqada rejalashtiring.
+      </p>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Avto Kredit Kalkulyatori -->
+      <div class="tool-box">
+        <h3><i class="fa-solid fa-coins text-amber-400"></i> Avtokredit Kalkulyatori</h3>
+        <p class="tool-desc">Oylik to'lov va umumiy foizlarni hisoblab chiqing</p>
+
+        <div class="calc-slider-group">
+          <div class="calc-slider-header">
+            <span>Avtomobil narxi ($):</span>
+            <strong id="creditCarPriceDisplay">$18,000</strong>
+          </div>
+          <input type="range" class="calc-slider" id="calcPrice" min="3000" max="100000" step="500" value="18000" oninput="calculateLoan()">
+        </div>
+
+        <div class="calc-slider-group">
+          <div class="calc-slider-header">
+            <span>Boshlang'ich to'lov (Oldindan to'lov):</span>
+            <strong id="creditDownPaymentDisplay">30% ($5,400)</strong>
+          </div>
+          <input type="range" class="calc-slider" id="calcDownPayment" min="15" max="70" step="5" value="30" oninput="calculateLoan()">
+        </div>
+
+        <div class="calc-slider-group">
+          <div class="calc-slider-header">
+            <span>Kredit muddati:</span>
+            <strong id="creditTermDisplay">36 oy (3 yil)</strong>
+          </div>
+          <input type="range" class="calc-slider" id="calcTerm" min="12" max="60" step="12" value="36" oninput="calculateLoan()">
+        </div>
+
+        <div class="calc-slider-group">
+          <div class="calc-slider-header">
+            <span>Yillik foiz stavkasi:</span>
+            <strong id="creditRateDisplay">22%</strong>
+          </div>
+          <input type="range" class="calc-slider" id="calcRate" min="12" max="32" step="1" value="22" oninput="calculateLoan()">
+        </div>
+
+        <div class="calc-result-box">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Taxminiy Oylik To'lov</div>
+            <div class="monthly-payment-val" id="monthlyPaymentResult">$481 / oy</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);" id="monthlyPaymentUzs">~6,180,000 UZS</div>
+          </div>
+          <button class="btn btn-primary" onclick="alert('Kredit arizangiz qabul qilindi! Bank xodimi tez orada siz bilan bog\'lanadi.')">
+            Ariza topshirish
+          </button>
+        </div>
+      </div>
+
+      <!-- Mashina Baholash (Valuation) -->
+      <div class="tool-box" id="valuation">
+        <h3><i class="fa-solid fa-chart-pie text-emerald-400"></i> Mashinangizni Baholang</h3>
+        <p class="tool-desc">Bozor tahlili asosida mashinangizning taxminiy qiymatini bilib oling</p>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Modelni tanlang</label>
+          <select id="valModel" class="select-control" onchange="runCarValuation()">
+            <option value="12500">Chevrolet Cobalt (LTZ / Style)</option>
+            <option value="13800">Chevrolet Gentra (3-pozitsiya Elegant)</option>
+            <option value="17500">Chevrolet Tracker 2 (Premier / Redline)</option>
+            <option value="14200">Chevrolet Onix (Premier)</option>
+            <option value="26500">Chevrolet Malibu 2 (2.0 Turbo)</option>
+            <option value="24500">BYD Song Plus DM-i (Champion Flagship)</option>
+            <option value="31000">Kia K5 (GT-Line / Prestige)</option>
+            <option value="35000">Monjaro Geely Flagship</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Ishlab chiqarilgan yili</label>
+          <select id="valYear" class="select-control" onchange="runCarValuation()">
+            <option value="2024">2024 yil (Yangi)</option>
+            <option value="2023" selected>2023 yil</option>
+            <option value="2022">2022 yil</option>
+            <option value="2021">2021 yil</option>
+            <option value="2020">2020 yil</option>
+            <option value="2018">2018 yil</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label">Yurgan masofasi (km)</label>
+          <input type="number" id="valMileage" class="input-control" value="25000" step="5000" oninput="runCarValuation()">
+        </div>
+
+        <div class="calc-result-box" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Bozor O'rtacha Narxi</div>
+            <div class="monthly-payment-val" id="valuationResult" style="color: #34d399;">$12,400 — $13,200</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Ishonchlilik: 96% bozor o'rtachasi</div>
+          </div>
+          <button class="btn btn-accent" onclick="openAddCarModal()">
+            Sotuvga qo'yish
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sell CTA Banner -->
+  <section class="container">
+    <div class="cta-banner">
+      <div class="cta-content">
+        <h2>Mashinangizni 3 kunda foydali soting!</h2>
+        <p>E'lon berish mutlaqo bepul. Saytimizga har kuni 40,000 dan ziyod xaridor tashrif buyuradi va mashinangiz tezda yangi egasini topadi.</p>
+      </div>
+      <div>
+        <button class="btn btn-outline" style="background: white; color: #1e3a8a; font-weight: 700; padding: 14px 28px; font-size: 1rem;" onclick="openAddCarModal()">
+          <i class="fa-solid fa-camera"></i> Hoziroq E'lon Joylashtirish
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="brand" style="margin-bottom: 16px;">
+          <div class="brand-icon"><i class="fa-solid fa-car-side"></i></div>
+          <div class="brand-text">
+            <h1 style="font-size: 1.3rem;">AVTOBOZOR</h1>
+            <span>O'zbekiston №1</span>
+          </div>
+        </div>
+        <p style="color: var(--text-muted); line-height: 1.6;">
+          O'zbekistonning eng zamonaviy va xavfsiz avtomobil savdo platformasi. Qulay qidiruv, ishonchli sotuvchilar va tezkor bitimlar.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Mashhur Markalar</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="setQuickBrand('Chevrolet')">Chevrolet Gentra, Cobalt</a></li>
+          <li><a href="javascript:void(0)" onclick="setQuickBrand('BYD')">BYD Song Plus, Chazor</a></li>
+          <li><a href="javascript:void(0)" onclick="setQuickBrand('Kia')">Kia K5, Sonet, Sorento</a></li>
+          <li><a href="javascript:void(0)" onclick="setQuickBrand('Hyundai')">Hyundai Elantra, Santa Fe</a></li>
+          <li><a href="javascript:void(0)" onclick="setQuickBrand('Zeekr')">Zeekr 001, 007</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Xizmatlar</h4>
+        <ul class="footer-links">
+          <li><a href="#calculator">Avtokredit kalkulyatori</a></li>
+          <li><a href="#valuation">Mashinani baholash</a></li>
+          <li><a href="javascript:void(0)" onclick="openAddCarModal()">E'lon berish</a></li>
+          <li><a href="#catalog">Kafolatlangan mashinalar</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Bog'lanish</h4>
+        <p style="margin-bottom: 10px;"><i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> Toshkent sh., Sergeli mashina bozori yaqinida</p>
+        <p style="margin-bottom: 10px;"><i class="fa-solid fa-phone" style="color: var(--accent-green);"></i> +998 (71) 200-55-44</p>
+        <p style="margin-bottom: 14px;"><i class="fa-brands fa-telegram" style="color: #38bdf8;"></i> @avtobozor_rasmiy</p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      &copy; 2026 AVTOBOZOR.UZ — Barcha huquqlar himoyalangan. Dasturiy ta'minot Desktop uchun maxsus ishlab chiqildi.
+    </div>
+  </footer>
+
+  <!-- Modal 1: Car Details Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title" id="detailModalTitle">Chevrolet Gentra Elegant Plus</h3>
+        <button class="close-modal" onclick="closeModal('detailModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="detailModalBody">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Car Listing ("E'lon berish") -->
+  <div class="modal-overlay" id="addCarModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-circle-plus text-blue-500"></i> Yangi E'lon Joylashtirish</h3>
+        <button class="close-modal" onclick="closeModal('addCarModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addCarForm" onsubmit="handleNewCarSubmit(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Markasi *</label>
+              <select id="newBrand" class="select-control" required>
+                <option value="Chevrolet">Chevrolet</option>
+                <option value="BYD">BYD</option>
+                <option value="Kia">Kia</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="BMW">BMW</option>
+                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                <option value="Li Auto">Li Auto</option>
+                <option value="Zeekr">Zeekr</option>
+                <option value="Boshqa">Boshqa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Model nomi *</label>
+              <input type="text" id="newModel" class="input-control" placeholder="Masalan: Cobalt 4-pozitsiya" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Narxi ($) *</label>
+              <input type="number" id="newPrice" class="input-control" placeholder="12500" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Yili *</label>
+              <input type="number" id="newYear" class="input-control" value="2023" min="1990" max="2026" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Probeg (km) *</label>
+              <input type="number" id="newMileage" class="input-control" placeholder="35000" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Yoqilg'i turi</label>
+              <select id="newFuel" class="select-control">
+                <option value="Benzin">Benzin</option>
+                <option value="Gibrid">Gibrid</option>
+                <option value="Elektro">Elektro</option>
+                <option value="Gaz/Metan">Gaz / Metan</option>
+                <option value="Propan">Propan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Uzatma qutisi</label>
+              <select id="newTransmission" class="select-control">
+                <option value="Avtomat">Avtomat</option>
+                <option value="Mexanika">Mexanika</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Viloyat / Shahar</label>
+              <select id="newRegion" class="select-control">
+                <option value="Toshkent">Toshkent</option>
+                <option value="Samarqand">Samarqand</option>
+                <option value="Farg'ona">Farg'ona</option>
+                <option value="Andijon">Andijon</option>
+                <option value="Namangan">Namangan</option>
+                <option value="Buxoro">Buxoro</option>
+                <option value="Qashqadaryo">Qashqadaryo</option>
+                <option value="Xorazm">Xorazm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Rasm URL manzili (yoki bo'sh qoldiring - chiroyli rasm avtomatik qo'yiladi)</label>
+            <input type="url" id="newImage" class="input-control" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Sotuvchi ismi *</label>
+              <input type="text" id="newSellerName" class="input-control" placeholder="Azizbek" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Telefon raqam *</label>
+              <input type="text" id="newPhone" class="input-control" placeholder="+998 90 123 45 67" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label">Qo'shimcha ma'lumotlar / Holati</label>
+            <textarea id="newDescription" class="input-control" rows="3" placeholder="Kraskasi toza, petno yo'q, Magicar 908 pult, yangi balonlar taqilgan..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="button" class="btn btn-outline" onclick="closeModal('addCarModal')">Bekor qilish</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> E'lonni e'lon qilish</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastNotification">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMsg">Amal bajarildi!</span>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // USD to UZS rate
+    const USD_RATE = 12850;
+
+    // Initial Mock Cars Dataset (Popular in Uzbekistan)
+    const initialCars = [
+      {
+        id: "car-1",
+        brand: "Chevrolet",
+        model: "Gentra 1.5 Elegant Plus (3-pozitsiya)",
+        year: 2023,
+        price: 13900,
+        mileage: 18000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Qora (Black)",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80",
+        badge: "TOP E'lon",
+        sellerName: "Sardorbek",
+        phone: "+998 (90) 876-54-32",
+        description: "Kraskasi toza 100%, hech qayeriga tegmagan. Magicar 908 pult, yangi yumshoq balonlar taqilgan. Moyi o'z vaqtida almashtirilgan, gaz qo'yilmagan."
+      },
+      {
+        id: "car-2",
+        brand: "BYD",
+        model: "Song Plus DM-i Champion Edition Flagship",
+        year: 2024,
+        price: 25800,
+        mileage: 8000,
+        fuel: "Gibrid",
+        transmission: "Avtomat",
+        color: "Kulrang (Grey)",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80",
+        badge: "Kreditga",
+        sellerName: "Jamshid aka",
+        phone: "+998 (97) 123-45-67",
+        description: "Eng to'liq komplektatsiya! 110 km faqat tokda yuradi, keyin gibrid. 360 kamera, panorama lyuk, obogrev va obduv o'rindiqlar. Holati ideal yangidek."
+      },
+      {
+        id: "car-3",
+        brand: "Chevrolet",
+        model: "Cobalt 1.5 LTZ Style (4-pozitsiya)",
+        year: 2024,
+        price: 13200,
+        mileage: 5000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Oq (White)",
+        region: "Samarqand",
+        image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=900&q=80",
+        badge: "Yangi",
+        sellerName: "Ulug'bek",
+        phone: "+998 (93) 333-22-11",
+        description: "Salondan 2024 yilda chiqqan. Rul gidravlika, ABS, diskalar yangi. Yurgani halol 5,000 km. Hujjatlari joyida, notarius orqali rasmiylashtiriladi."
+      },
+      {
+        id: "car-4",
+        brand: "Chevrolet",
+        model: "Tracker 2 Premier Redline",
+        year: 2023,
+        price: 18500,
+        mileage: 22000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Qizil / Qora tom",
+        region: "Farg'ona",
+        image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80",
+        badge: "Kraska toza",
+        sellerName: "Boburmirzo",
+        phone: "+998 (91) 456-78-90",
+        description: "Premier versiya: panorama lyuk, simsiz quvvatlash, simsiz Apple CarPlay, orqa ko'rinish kamerasi. Holati a'lo darajada."
+      },
+      {
+        id: "car-5",
+        brand: "Kia",
+        model: "K5 GT-Line 2.5 GDI",
+        year: 2023,
+        price: 32500,
+        mileage: 19000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Qora perlamutr",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=900&q=80",
+        badge: "TOP E'lon",
+        sellerName: "Rustam",
+        phone: "+998 (99) 800-11-22",
+        description: "ADM Jizzax kafolati bor. 2.5 motor kuchli, GT-Line qizil charm salon, Bose audiotizim, head-up displey. Barcha detailing ishlari qilingan."
+      },
+      {
+        id: "car-6",
+        brand: "Chevrolet",
+        model: "Malibu 2 (Premier 2.0 Turbo)",
+        year: 2022,
+        price: 27900,
+        mileage: 38000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Mokriy asfalt",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+        badge: "Kreditga",
+        sellerName: "Akbarali",
+        phone: "+998 (90) 111-99-88",
+        description: "253 ot kuchi! 2.0 Turbo motor. Shamollatiladigan va qiziydigan o'rindiqlar, Bose audio, to'liq shovqinsizlantirish (shumoizolyatsiya) qilingan."
+      },
+      {
+        id: "car-7",
+        brand: "Zeekr",
+        model: "Zeekr 001 YOU Edition (Dual Motor 4WD)",
+        year: 2024,
+        price: 54000,
+        mileage: 6500,
+        fuel: "Elektro",
+        transmission: "Avtomat",
+        color: "To'q kulrang",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=900&q=80",
+        badge: "Elektro",
+        sellerName: "Elmurod",
+        phone: "+998 (98) 300-44-55",
+        description: "544 ot kuchi, 0 dan 100 gacha 3.8 soniya! Pnevmapodveska, avtomatik ochiladigan eshiklar, Yamaha akustika, 100 kVt batareya."
+      },
+      {
+        id: "car-8",
+        brand: "Chevrolet",
+        model: "Onix Premier 2 (1.2 Turbo)",
+        year: 2023,
+        price: 14700,
+        mileage: 14000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Qora (Black)",
+        region: "Andijon",
+        image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=900&q=80",
+        badge: "Kraska toza",
+        sellerName: "Shahboz",
+        phone: "+998 (93) 777-66-55",
+        description: "Premier 2: yarim avtomatik parkovka qilish, ko'r zonalarni aniqlash, barcha o'rindiqlarda isitish tizimi bor. Benzinda tejamkor (shahar ichida 6-7 litr)."
+      },
+      {
+        id: "car-9",
+        brand: "BMW",
+        model: "BMW 530i M Sport (G30)",
+        year: 2021,
+        price: 49500,
+        mileage: 42000,
+        fuel: "Benzin",
+        transmission: "Avtomat",
+        color: "Moviy metallik",
+        region: "Toshkent",
+        image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80",
+        badge: "TOP E'lon",
+        sellerName: "Farrux",
+        phone: "+998 (94) 555-00-11",
+        description: "Original M Sport paket. Laserlight faralar, Harman Kardon audio, lyuk, to'liq charm salon. Avtomobil ideal holatda saqlangan."
+      }
+    ];
+
+    // Local Storage synchronization
+    let cars = JSON.parse(localStorage.getItem('avtobozor_cars')) || initialCars;
+    let favorites = JSON.parse(localStorage.getItem('avtobozor_favs')) || [];
+    let currentQuickBrand = '';
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCars();
+      updateFavCount();
+      calculateLoan();
+      runCarValuation();
+      setupTheme();
+    });
+
+    // Theme toggle
+    function setupTheme() {
+      const toggleBtn = document.getElementById('themeToggle');
+      const savedTheme = localStorage.getItem('avtobozor_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+
+      toggleBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('avtobozor_theme', nextTheme);
+        updateThemeIcon(nextTheme);
+      });
+    }
+
+    function updateThemeIcon(theme) {
+      const icon = document.querySelector('#themeToggle i');
+      if (theme === 'light') {
+        icon.className = 'fa-solid fa-sun';
+      } else {
+        icon.className = 'fa-solid fa-moon';
+      }
+    }
+
+    // Render Car Cards
+    function renderCars(carsToRender = null) {
+      const grid = document.getElementById('carsGrid');
+      let list = carsToRender ? [...carsToRender] : [...getFilteredCars()];
+
+      // Sorting
+      const sortBy = document.getElementById('sortBy').value;
+      if (sortBy === 'price_asc') {
+        list.sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'price_desc') {
+        list.sort((a, b) => b.price - a.price);
+      } else if (sortBy === 'year_desc') {
+        list.sort((a, b) => b.year - a.year);
+      } else if (sortBy === 'mileage_asc') {
+        list.sort((a, b) => a.mileage - b.mileage);
+      }
+
+      document.getElementById('totalCarsCount').textContent = list.length;
+
+      if (list.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px dashed var(--border-glass);">
+            <i class="fa-solid fa-car-burst" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 15px;"></i>
+            <h3>Hech qanday avtomobil topilmadi</h3>
+            <p style="color: var(--text-muted); margin-top: 6px;">Qidiruv mezonlarini o'zgartirib ko'ring yoki filtrlarni tozalang.</p>
+            <button class="btn btn-primary" style="margin-top: 16px;" onclick="resetFilters()">Filtrlarni tozalash</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(car => {
+        const isFav = favorites.includes(car.id);
+        const priceUzsFormatted = (car.price * USD_RATE).toLocaleString('uz-UZ');
+        const priceUsdFormatted = car.price.toLocaleString('en-US');
+        const badgeClass = getBadgeClass(car.badge);
+
+        return `
+          <div class="car-card">
+            <div class="car-img-wrapper">
+              <img src="${car.image}" alt="${car.brand} ${car.model}" class="car-img" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80'">
+              <div class="car-badges">
+                ${car.badge ? `<span class="badge ${badgeClass}">${car.badge}</span>` : ''}
+              </div>
+              <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${car.id}', event)" title="Saqlash">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="car-content">
+              <div class="car-header">
+                <h3 class="car-title" title="${car.brand} ${car.model}">${car.model}</h3>
+                <div class="car-location">
+                  <i class="fa-solid fa-location-dot"></i> ${car.region} viloyati &bull; ${car.year} yil
+                </div>
+              </div>
+
+              <div class="car-specs">
+                <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> ${car.mileage.toLocaleString()} km</div>
+                <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ${car.fuel}</div>
+                <div class="spec-item"><i class="fa-solid fa-gear"></i> ${car.transmission}</div>
+                <div class="spec-item"><i class="fa-solid fa-palette"></i> ${car.color || 'Oq'}</div>
+              </div>
+
+              <div class="car-footer">
+                <div class="price-box">
+                  <span class="price-main">$${priceUsdFormatted}</span>
+                  <span class="price-uzs">~${priceUzsFormatted} UZS</span>
+                </div>
+                <div class="card-actions">
+                  <button class="btn btn-primary btn-detail" onclick="openCarDetail('${car.id}')">
+                    <i class="fa-solid fa-eye"></i> Batafsil
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getBadgeClass(badge) {
+      if (!badge) return '';
+      if (badge.includes('TOP')) return 'badge-top';
+      if (badge.includes('Yangi')) return 'badge-new';
+      if (badge.includes('Kredit')) return 'badge-credit';
+      if (badge.includes('Elektro')) return 'badge-electric';
+      return 'badge-new';
+    }
+
+    // Filter Logic
+    function getFilteredCars() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const brand = currentQuickBrand || document.getElementById('brandSelect').value;
+      const fuel = document.getElementById('fuelSelect').value;
+      const maxPrice = document.getElementById('maxPriceSelect').value;
+      const region = document.getElementById('regionSelect').value;
+
+      return cars.filter(car => {
+        const fullTitle = `${car.brand} ${car.model}`.toLowerCase();
+        const matchesSearch = !search || fullTitle.includes(search) || (car.description && car.description.toLowerCase().includes(search));
+        const matchesBrand = !brand || car.brand.toLowerCase() === brand.toLowerCase();
+        const matchesFuel = !fuel || car.fuel === fuel;
+        const matchesPrice = !maxPrice || car.price <= parseInt(maxPrice);
+        const matchesRegion = !region || car.region.includes(region);
+
+        return matchesSearch && matchesBrand && matchesFuel && matchesPrice && matchesRegion;
+      });
+    }
+
+    function applyFilters() {
+      renderCars();
+      const catalogEl = document.getElementById('catalog');
+      catalogEl.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('brandSelect').value = '';
+      document.getElementById('fuelSelect').value = '';
+      document.getElementById('maxPriceSelect').value = '';
+      document.getElementById('regionSelect').value = '';
+      currentQuickBrand = '';
+      document.querySelectorAll('.quick-chip').forEach((c, idx) => {
+        c.classList.toggle('active', idx === 0);
+      });
+      renderCars();
+    }
+
+    function setQuickBrand(brand) {
+      currentQuickBrand = brand;
+      document.getElementById('brandSelect').value = brand;
+      document.querySelectorAll('.quick-chip').forEach(chip => {
+        if (chip.textContent.includes(brand) || (brand === '' && chip.textContent === 'Barchasi')) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+      renderCars();
+    }
+
+    // Favorites System
+    function toggleFavorite(id, event) {
+      event.stopPropagation();
+      const index = favorites.indexOf(id);
+      if (index === -1) {
+        favorites.push(id);
+        showToast("Mashina saqlanganlarga qo'shildi! ❤️");
+      } else {
+        favorites.splice(index, 1);
+        showToast("Saqlanganlardan olib tashlandi.");
+      }
+      localStorage.setItem('avtobozor_favs', JSON.stringify(favorites));
+      updateFavCount();
+      renderCars();
+    }
+
+    function updateFavCount() {
+      document.getElementById('favCount').textContent = favorites.length;
+    }
+
+    function filterFavorites() {
+      if (favorites.length === 0) {
+        showToast("Hozircha saqlangan e'lonlar mavjud emas!");
+        return;
+      }
+      const favCars = cars.filter(c => favorites.includes(c.id));
+      renderCars(favCars);
+      document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Open Car Detail Modal
+    function openCarDetail(id) {
+      const car = cars.find(c => c.id === id);
+      if (!car) return;
+
+      const priceUzs = (car.price * USD_RATE).toLocaleString('uz-UZ');
+      const priceUsd = car.price.toLocaleString('en-US');
+
+      document.getElementById('detailModalTitle').innerHTML = `
+        <span>${car.brand} ${car.model}</span>
+        <span style="font-size: 0.85rem; color: #38bdf8; margin-left: 10px;">$${priceUsd}</span>
+      `;
+
+      document.getElementById('detailModalBody').innerHTML = `
+        <div class="detail-img-box">
+          <img src="${car.image}" alt="${car.brand} ${car.model}" class="detail-img" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80'">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #38bdf8;">$${priceUsd}</div>
+            <div style="font-size: 0.9rem; color: var(--text-muted);">${priceUzs} UZS</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> ${car.region}</div>
+            <span class="badge ${getBadgeClass(car.badge)}" style="display: inline-block; margin-top: 4px;">${car.badge || 'Tekshirilgan'}</span>
+          </div>
+        </div>
+
+        <div class="detail-specs-grid">
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-calendar"></i> Yili</div>
+            <div class="detail-spec-val">${car.year} yil</div>
+          </div>
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-gauge"></i> Yurgani</div>
+            <div class="detail-spec-val">${car.mileage.toLocaleString()} km</div>
+          </div>
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-gas-pump"></i> Yoqilg'i</div>
+            <div class="detail-spec-val">${car.fuel}</div>
+          </div>
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-gear"></i> Korobka</div>
+            <div class="detail-spec-val">${car.transmission}</div>
+          </div>
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-palette"></i> Rangi</div>
+            <div class="detail-spec-val">${car.color || 'Standart'}</div>
+          </div>
+          <div class="detail-spec-card">
+            <div class="detail-spec-title"><i class="fa-solid fa-shield"></i> Holati</div>
+            <div class="detail-spec-val">A'lo darajada</div>
+          </div>
+        </div>
+
+        <div style="margin: 20px 0;">
+          <h4 style="font-size: 1rem; margin-bottom: 8px;"><i class="fa-solid fa-circle-info text-blue-500"></i> Tavsif va qo'shimcha ma'lumot:</h4>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; background: var(--bg-surface-elevated); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+            ${car.description || 'Egasidan avtomobil toza holatda, barcha texnik ko\'rikdan o\'tgan.'}
+          </p>
+        </div>
+
+        <!-- Contact Box -->
+        <div class="seller-contact-card">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Sotuvchi:</div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">${car.sellerName || 'Egalik qiluvchi'}</div>
+            <div style="font-size: 0.85rem; color: #10b981;"><i class="fa-solid fa-circle-check"></i> Shaxsi tasdiqlangan</div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <a href="tel:${car.phone}" class="btn btn-primary" style="font-size: 0.9rem;">
+              <i class="fa-solid fa-phone"></i> ${car.phone}
+            </a>
+            <a href="https://t.me/" target="_blank" class="btn btn-outline" style="font-size: 0.9rem;">
+              <i class="fa-brands fa-telegram"></i> Telegram
+            </a>
+          </div>
+        </div>
+      `;
+
+      openModal('detailModal');
+    }
+
+    // Modal Handlers
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function openAddCarModal() {
+      openModal('addCarModal');
+    }
+
+    // Add New Car Listing Handler
+    function handleNewCarSubmit(e) {
+      e.preventDefault();
+
+      const brand = document.getElementById('newBrand').value;
+      const model = document.getElementById('newModel').value;
+      const price = parseFloat(document.getElementById('newPrice').value);
+      const year = parseInt(document.getElementById('newYear').value);
+      const mileage = parseInt(document.getElementById('newMileage').value);
+      const fuel = document.getElementById('newFuel').value;
+      const transmission = document.getElementById('newTransmission').value;
+      const region = document.getElementById('newRegion').value;
+      let image = document.getElementById('newImage').value.trim();
+      const sellerName = document.getElementById('newSellerName').value;
+      const phone = document.getElementById('newPhone').value;
+      const description = document.getElementById('newDescription').value;
+
+      // Default high quality image if none provided
+      if (!image) {
+        if (brand === 'BYD') image = 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80';
+        else if (brand === 'BMW') image = 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80';
+        else if (brand === 'Kia') image = 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=900&q=80';
+        else image = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80';
+      }
+
+      const newCar = {
+        id: 'car-' + Date.now(),
+        brand,
+        model,
+        price,
+        year,
+        mileage,
+        fuel,
+        transmission,
+        color: 'Oq',
+        region,
+        image,
+        badge: "Yangi E'lon",
+        sellerName,
+        phone,
+        description: description || "Avtomobil yaxshi saqlangan, egasidan to'g'ridan-to'g'ri sotiladi."
+      };
+
+      cars.unshift(newCar);
+      localStorage.setItem('avtobozor_cars', JSON.stringify(cars));
+
+      closeModal('addCarModal');
+      document.getElementById('addCarForm').reset();
+      renderCars();
+      showToast("E'loningiz muvaffaqiyatli joylashtirildi! 🚗");
+      
+      // Scroll to catalog
+      document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Loan Calculator Logic
+    function calculateLoan() {
+      const price = parseFloat(document.getElementById('calcPrice').value);
+      const downPercent = parseFloat(document.getElementById('calcDownPayment').value);
+      const termMonths = parseInt(document.getElementById('calcTerm').value);
+      const rateYear = parseFloat(document.getElementById('calcRate').value);
+
+      const downPaymentVal = price * (downPercent / 100);
+      const loanAmount = price - downPaymentVal;
+      const monthlyRate = (rateYear / 100) / 12;
+
+      // Annuity formula: P = L * [r(1+r)^n] / [(1+r)^n - 1]
+      let monthlyPayment = 0;
+      if (monthlyRate > 0) {
+        monthlyPayment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / (Math.pow(1 + monthlyRate, termMonths) - 1);
+      } else {
+        monthlyPayment = loanAmount / termMonths;
+      }
+
+      document.getElementById('creditCarPriceDisplay').textContent = `$${price.toLocaleString()}`;
+      document.getElementById('creditDownPaymentDisplay').textContent = `${downPercent}% ($${Math.round(downPaymentVal).toLocaleString()})`;
+      document.getElementById('creditTermDisplay').textContent = `${termMonths} oy (${termMonths / 12} yil)`;
+      document.getElementById('creditRateDisplay').textContent = `${rateYear}%`;
+
+      const monthlyInt = Math.round(monthlyPayment);
+      document.getElementById('monthlyPaymentResult').textContent = `$${monthlyInt.toLocaleString()} / oy`;
+      document.getElementById('monthlyPaymentUzs').textContent = `~${(monthlyInt * USD_RATE).toLocaleString()} UZS`;
+    }
+
+    // Car Valuation Logic
+    function runCarValuation() {
+      const basePrice = parseFloat(document.getElementById('valModel').value);
+      const year = parseInt(document.getElementById('valYear').value);
+      const mileage = parseInt(document.getElementById('valMileage').value) || 20000;
+
+      // Price depreciation formula based on age and mileage
+      const currentYear = 2026;
+      const age = Math.max(0, currentYear - year);
+      const ageDepreciation = age * 0.05; // 5% per year
+      const mileageDepreciation = (mileage / 10000) * 0.015; // 1.5% per 10,000 km
+
+      const totalFactor = Math.max(0.45, 1 - ageDepreciation - mileageDepreciation);
+      const estimatedPrice = Math.round(basePrice * totalFactor / 100) * 100;
+
+      const low = (estimatedPrice * 0.96).toFixed(0);
+      const high = (estimatedPrice * 1.04).toFixed(0);
+
+      document.getElementById('valuationResult').textContent = `$${Number(low).toLocaleString()} — $${Number(high).toLocaleString()}`;
+    }
+
+    // Toast notification
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // Close modal when clicked outside
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
